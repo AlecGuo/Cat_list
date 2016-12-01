@@ -1,0 +1,49 @@
+.div-overflow {
+    overflow: auto;
+}
+
+.panel-left {
+    margin-left: -10%;
+    margin-right: 10px;
+    position: absolute;
+    overflow-y: auto;
+    height: 900% ;
+    overflow-x: auto;
+    width: 90%;
+}
+.panel-right {
+    margin-left: -40px;
+
+}
+
+.borderless {
+    border:none;
+}
+
+.a-pointer {
+    cursor: pointer;
+
+}
+
+.list-tree {
+    border-right:none;
+    border-bottom:none;
+    border-top:none;
+    border-color: #28FF28;
+}
+
+.list-tree-span {
+    color: #28FF28;
+    margin-left: -15px;
+}
+
+.panel-body textarea {
+    width:100%;
+    height: 60px;
+
+
+}
+
+.div-float1 {
+    float: left;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="#">
+
+    <title>新结算线上服务状态查询</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/static/js/bootstrap/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">新结算平台线上服务查询</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="">灰度状态查询<span class="sr-only">(current)</span></a></li>
+            <li><a href="">服务列表查询</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h3 class="page-header">Welcome here!</h3>
+          <div class="row placeholders">
+            <!--<div class="col-xs-6 col-sm-3 placeholder"> -->
+              <a style="float:left;padding-left:15px" ><button   type="button" class="btn btn-success" id="buttonOnline" >online</button></a>
+               <!--href="http://0.0.0.0:9080/online_list/online_mgr"
+              href="http://0.0.0.0:9080/online_list/offline_mgr" -->
+              <a style="float:left;padding-left:20px" ><button  type="button" class="btn btn-info" id="buttonOffline" >offline</button></a>
+
+          </div>
+          <h4 class="sub-header"> search results:</h4>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>GROUP</th>
+                  <th>AppName</th>
+                  <th>VERTION</th>
+                  <th>STAT</th>
+                </tr>
+              </thead>
+              <tbody id="append-line">
+			  <!-- {% for l in host_list %}
+                <tr>
+                  <td>{{ l.ip }}</td>
+                  <td>{{ l.group }} </td>
+                  <td>{{ l.appname }}</td>
+                  <td>{{ l.version }}</td>
+                  <td>{{ l.stat }}</td>
+                </tr>
+              {% endfor %} -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="/static/js/bootstrap/jquery.min.js"></script>-->
+    <script src="/static/js/bootstrap//bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="/static/js/bootstrap/holder.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/static/js/bootstrap/ie10-viewport-bug-workaround.js"></script>
+    <script src="/static/js/jquery-1.9.1/jquery-1.9.1.js">  </script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+         $('button#buttonOnline').click(function(){
+             $.getJSON("{% url "online_mgr" %}",{task_type:"online_mgr"},function(callback){
+                console.log('res-----------',callback);
+                PrintonPage(callback);
+             });//end getJSON
+
+         });//end buttonOnline get
+        function PrintonPage(callback){
+            //result box
+            $('tbody#append-line').html(" ");
+            $.each(callback,function(index,item){
+                var row_tab_html = "<tr>" + "<td>" + item.ip + "</td>" + "<td>" + item.group + "</td>" + "<td>" + item.appname + "</td>" + "<td>" + item.version + "</td>" + "<td>" + item.stat + "</td>" + "</tr>"
+                $('tbody#append-line').append(row_tab_html);
+            }); //each end
+
+        };  //PrintonPage of online_mgr end
+         $('button#buttonOffline').click(function(){
+             $.getJSON("{% url 'offline_mgr' %}",{task_type:"offline_mgr"},function(callback){
+                console.log('res-----------');
+                PrintonPage(callback);
+             });//end getJSON
+
+         });//end buttonOnline get
+        function PrintonPage(callback){
+            //result box
+            $('tbody#append-line').html(" ");
+            $.each(callback,function(index,item){
+                var row_tab_html = "<tr>" + "<td>" + item.ip + "</td>" + "<td>" + item.group + "</td>" + "<td>" + item.appname + "</td>" + "<td>" + item.version + "</td>" + "<td>" + item.stat + "</td>" + "</tr>"
+                $('tbody#append-line').append(row_tab_html);
+            }); //each end
+
+        }; //PrintONpage of offline_mgr end
+ });
+    </script>
+
+</body></html>
